@@ -11,10 +11,7 @@ const Formulario = () =>{
     const [email, setEmail] = useState("");
     const [contraseña, setContraseña] = useState("");
     const [contraseña2, setContraseña2] = useState("");
-    const [error, setError] = useState(false);
-    const [errorEmail, setErrorEmail] = useState(false);
-    const [errorContraseña, setErrorContraseña] = useState(false);
-    const [registroExitoso, setRegistroExitoso ] = useState(false);
+    const [alerta, setAlerta] = useState({tipo:null, mensaje:''})
     
 
 
@@ -24,41 +21,27 @@ const Formulario = () =>{
     
         
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
 
 
     
     if (nombre === "" || email === "" || contraseña === "" || contraseña2 === "" ){  
-        setError(true)
+        setAlerta({tipo:'danger', mensaje:'Todos los campos son obligatorios'})
         return;
-    }else{
-        setError(false)    
     }
         
     if(!emailRegex.test(email)) {
-        setErrorEmail(true)
-        return;
-    }else{
-        setErrorEmail(false)
-        
+        setAlerta({tipo:'danger', mensaje:'Ingrese un correo electrónico válido'})
+        return; 
     }
        
-        
-    if(setContraseña === setContraseña2){
-        setErrorContraseña(false)
-        
-    }else{
-
-        setErrorContraseña(true)
-        return;
+    if(setContraseña !== setContraseña2){
+        setAlerta({tipo:'danger', mensaje:'Contraseñas no Coinciden'})
+       
     }
+        
+    setAlerta({tipo:'primary', mensaje:'Formulario Enviado'})    
     
-    if ((nombre === "" || email === "" || contraseña === "" || contraseña2 === "" ) || (!emailRegex.test(email)) || (setContraseña === setContraseña2)){
-        setRegistroExitoso(true)
-        return;
-    }else { 
-        setRegistroExitoso(false)
-    }
-
         setNombre('');
         setEmail('');
         setContraseña('');
@@ -121,14 +104,7 @@ const Formulario = () =>{
                     
                 </Form.Group>
                 <Button className='btn1' type="submit">Enviar</Button>
-                {error ?
-                <Mensaje variant={"danger"} textMensaje={"Todos los campos son obligatorios"}/> :null}
-                {errorEmail ?
-                <Mensaje variant={"danger"} textMensaje={"Ingrese un correo electrónico válido"}/> :null}
-                {errorContraseña ?
-                <Mensaje variant={"danger"} textMensaje={"Las contraseñas no coinciden"}/> :null}
-                {registroExitoso?
-                <Mensaje variant={"primary"} textMensaje={"Formulario Enviado"}/> :null}
+                {alerta.tipo && <Mensaje variant={alerta.tipo} textMensaje={alerta.mensaje}/>}
             </Form>
         </>
     )
