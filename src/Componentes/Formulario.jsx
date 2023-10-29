@@ -1,5 +1,6 @@
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Mensaje from './Mensaje';
 import { useState } from 'react';
 
 
@@ -10,53 +11,74 @@ const Formulario = () =>{
     const [email, setEmail] = useState("");
     const [contraseña, setContraseña] = useState("");
     const [contraseña2, setContraseña2] = useState("");
-    const [erro, setError] = useState('');
-    const [errorEmail, setErrorEmail] = useState('');
-    const [errorContraseña, setErrorContraseña] = useState('');
+    const [error, setError] = useState(false);
+    const [errorEmail, setErrorEmail] = useState(false);
+    const [errorContraseña, setErrorContraseña] = useState(false);
+    const [registroExitoso, setRegistroExitoso ] = useState(false);
     
 
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
     
         
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+
+    
     if (nombre === "" || email === "" || contraseña === "" || contraseña2 === "" ){  
-        setError
-        alert("Todos los campos son obligatorios");
+        setError(true)
         return;
     }else{
-        setError('');
+        setError(false)    
     }
-
-
-    if (!emailRegex.test(email)) {
-        setErrorEmail
-        alert('Ingrese un correo electrónico válido');
-        return;
-    } else {
-        setErrorEmail('');
-    }
-    
-    
-    
-    if (contraseña !== contraseña2) {
-        setErrorContraseña
-        alert('Las contraseñas no coinciden');
-        return;
-    } else {
-        setErrorContraseña('');
-    }
-    
-    alert('Formulario enviado:', { nombre, email, contraseña });
-    
         
+    if(!emailRegex.test(email)) {
+        setErrorEmail(true)
+        return;
+    }else{
+        setErrorEmail(false)
+        
+    }
+       
+        
+    if(setContraseña === setContraseña2){
+        setErrorContraseña(false)
+        
+    }else{
+
+        setErrorContraseña(true)
+        return;
+    }
+    
+    if ((nombre === "" || email === "" || contraseña === "" || contraseña2 === "" ) || (!emailRegex.test(email)) || (setContraseña === setContraseña2)){
+        setRegistroExitoso(true)
+        return;
+    }else { 
+        setRegistroExitoso(false)
+    }
+
         setNombre('');
         setEmail('');
         setContraseña('');
         setContraseña2('');
-    };
+
+       
+
+    }    
+    
+    
+
+    
+    
+        
+        
+        
+    
+
+   
+
 
 
 
@@ -96,12 +118,21 @@ const Formulario = () =>{
                     value ={contraseña2} 
                     type="password"
                     onChange={(e) => setContraseña2(e.target.value )}/>  
-                    {errorContraseña && <p className="error-text">{errorContraseña}</p>}
+                    
                 </Form.Group>
                 <Button className='btn1' type="submit">Enviar</Button>
+                {error ?
+                <Mensaje variant={"danger"} textMensaje={"Todos los campos son obligatorios"}/> :null}
+                {errorEmail ?
+                <Mensaje variant={"danger"} textMensaje={"Ingrese un correo electrónico válido"}/> :null}
+                {errorContraseña ?
+                <Mensaje variant={"danger"} textMensaje={"Las contraseñas no coinciden"}/> :null}
+                {registroExitoso?
+                <Mensaje variant={"primary"} textMensaje={"Formulario Enviado"}/> :null}
             </Form>
         </>
     )
 }
+
 
 export default Formulario;

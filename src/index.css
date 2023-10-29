@@ -33,6 +33,7 @@ h2{
 }
 
 .social{
+  
   display:flex;
   justify-content:center;
   gap:30px;
@@ -45,4 +46,9 @@ Button{
 
 h5{
   margin-top: 10px;
+}
+
+.btn1{
+  margin-bottom: 10px;
+
 }
